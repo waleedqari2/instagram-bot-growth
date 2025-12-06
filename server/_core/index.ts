@@ -7,7 +7,7 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import path from "path"; // 👈 أضفناه للمسار
+import path from "path"; // مسارات الملفات
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -36,7 +36,19 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-  // 👇 أضفنا route الـ login هنا (يفضّل يكون قبل الـ OAuth وقبل tRPC)
+  // ===== debug: نتحقق من وجود الملف =====
+  app.get("/debug", async (_req, res) => {
+    const fs = await import("node:fs");
+    const publicPath = path.join(__dirname, '../../public');
+    try {
+      const files = await fs.promises.readdir(publicPath);
+      res.json({ publicPath, files });
+    } catch (e: any) {
+      res.json({ error: e.message, publicPath });
+    }
+  });
+
+  // ===== خدمة صفحة الـ login =====
   app.use("/login", express.static(path.join(__dirname, '../../public')));
   app.get("/", (_req, res) => res.redirect("/login"));
 
