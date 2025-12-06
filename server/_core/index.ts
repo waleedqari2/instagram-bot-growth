@@ -36,7 +36,7 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
   // serve login page
-  app.use("/login", express.static(path.join(__dirname, '../../public')));
+  app.use("/login", express.static(path.join(process.cwd(), 'public')));
   app.get("/", (_req, res) => res.redirect("/login"));
 
   registerOAuthRoutes(app);
