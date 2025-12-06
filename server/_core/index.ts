@@ -37,7 +37,7 @@ async function startServer() {
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
   // 👇 أضفنا route الـ login هنا (يفضّل يكون قبل الـ OAuth وقبل tRPC)
-  app.use("/login", express.static(path.join(process.cwd(), "public")));
+  app.use("/login", express.static(path.join(__dirname, '../../public')));
   app.get("/", (_req, res) => res.redirect("/login"));
 
   // OAuth
