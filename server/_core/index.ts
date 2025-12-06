@@ -35,12 +35,20 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-  // serve login page
+  // ===== نخدم الـ login مباشرة =====
   app.use("/login", express.static(path.join(process.cwd(), 'public')));
   app.get("/", (_req, res) => res.redirect("/login"));
 
+  // ===== نضيف endpoint بسيط للتأكد =====
+  app.get("/health", (_req, res) => res.send("Backend is alive"));
+
+  // ===== نوقف خدمة الـ frontend على الـ root =====
+  // لا نستدعي setupVite ولا serveStatic على الـ root
+
+  // OAuth
   registerOAuthRoutes(app);
 
+  // tRPC
   app.use(
     "/api/trpc",
     createExpressMiddleware({
@@ -48,12 +56,6 @@ async function startServer() {
       createContext,
     })
   );
-
-  if (process.env.NODE_ENV === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
-  }
 
   const preferredPort = parseInt(process.env.PORT || "3000");
   const port = await findAvailablePort(preferredPort);
@@ -63,7 +65,7 @@ async function startServer() {
   }
 
   server.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}/`);
+    console.log(`[Railway] Backend listening on http://localhost:${port}/`);
   });
 }
 
