@@ -17,29 +17,42 @@
     .box{
       text-align:center;
       background:#222;
-      padding:40px 30px;
-      border-radius:8px;
-      box-shadow:0 0 12px rgba(225,48,108,.4);
+      padding:50px 40px;
+      border-radius:12px;
+      box-shadow:0 0 18px rgba(225,48,108,.5);
+      max-width:420px;
+      width:90%;
     }
-    h1{margin:0 0 10px;font-size:28px}
-    p{margin:0 0 25px;font-size:16px}
-    a.button{
+    h1{margin:0 0 12px;font-size:32px}
+    p{margin:0 0 30px;font-size:18px;line-height:1.4}
+    .btn{
       display:inline-block;
       background:#e1306c;
       color:#fff;
-      padding:12px 24px;
-      border-radius:4px;
+      padding:14px 28px;
+      border-radius:6px;
       text-decoration:none;
       font-size:18px;
+      margin:8px;
+      transition:background .25s;
     }
-    a.button:hover{background:#c7225a}
+    .btn:hover{background:#c7225a}
+    .btn-secondary{
+      background:#444;
+    }
+    .btn-secondary:hover{background:#555}
   </style>
 </head>
 <body>
   <div class="box">
     <h1>Instagram Bot Growth Manager</h1>
-    <p>البووت جاهز للعمل. اضغط للدخول إلى لوحة التحكم.</p>
-    <a class="button" href="/">الانتقال إلى Dashboard</a>
+    <p>البووت جاهز للعمل. اختر ما تريد:</p>
+
+    <!-- الزر الرئيسي: يذهب إلى Dashboard -->
+    <a class="btn" href="/">لوحة التحكم</a>
+
+    <!-- زر ثانٍ: يذهب مباشرة إلى صفحة المتابعات -->
+    <a class="btn btn-secondary" href="/targets">إدارة الحسابات المستهدفة</a>
   </div>
 </body>
 </html>
