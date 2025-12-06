@@ -7,6 +7,7 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import path from "path"; // 👈 أضفناه للمسار
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -30,12 +31,19 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
-  // Configure body parser with larger size limit for file uploads
+
+  // body parser
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
-  // OAuth callback under /api/oauth/callback
+
+  // 👇 أضفنا route الـ login هنا (يفضّل يكون قبل الـ OAuth وقبل tRPC)
+  app.use("/login", express.static(path.join(process.cwd(), "public")));
+  app.get("/", (_req, res) => res.redirect("/login"));
+
+  // OAuth
   registerOAuthRoutes(app);
-  // tRPC API
+
+  // tRPC
   app.use(
     "/api/trpc",
     createExpressMiddleware({
@@ -43,7 +51,8 @@ async function startServer() {
       createContext,
     })
   );
-  // development mode uses Vite, production mode uses static files
+
+  // dev/prod static
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
   } else {
