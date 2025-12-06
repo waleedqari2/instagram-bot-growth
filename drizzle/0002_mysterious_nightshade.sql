@@ -1,0 +1,1 @@
+ALTER TABLE `bot_config` MODIFY COLUMN `likesPerHour` int NOT NULL DEFAULT 62;

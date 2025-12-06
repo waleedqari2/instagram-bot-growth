@@ -1,0 +1,1 @@
+ALTER TABLE `scraped_users` ADD `instagramUserId` varchar(255);

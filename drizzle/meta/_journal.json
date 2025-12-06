@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1764238193707,
+      "tag": "0000_eager_the_phantom",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1764238252161,
+      "tag": "0001_famous_eddie_brock",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1764238896823,
+      "tag": "0002_mysterious_nightshade",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1764245376178,
+      "tag": "0003_tidy_prowler",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1764576076785,
+      "tag": "0004_woozy_thor_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1764597655081,
+      "tag": "0005_green_anthem",
+      "breakpoints": true
+    }
+  ]
+}
