@@ -7,7 +7,6 @@ import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import path from "path"; // مسارات الملفات
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -32,30 +31,11 @@ async function startServer() {
   const app = express();
   const server = createServer(app);
 
-  // body parser
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-  // ===== debug: نتحقق من وجود الملف =====
-  app.get("/debug", async (_req, res) => {
-    const fs = await import("node:fs");
-    const publicPath = path.join(__dirname, '../../public');
-    try {
-      const files = await fs.promises.readdir(publicPath);
-      res.json({ publicPath, files });
-    } catch (e: any) {
-      res.json({ error: e.message, publicPath });
-    }
-  });
-
-  // ===== خدمة صفحة الـ login =====
-  app.use("/login", express.static(path.join(__dirname, '../../public')));
-  app.get("/", (_req, res) => res.redirect("/login"));
-
-  // OAuth
   registerOAuthRoutes(app);
 
-  // tRPC
   app.use(
     "/api/trpc",
     createExpressMiddleware({
@@ -64,7 +44,6 @@ async function startServer() {
     })
   );
 
-  // dev/prod static
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
   } else {
