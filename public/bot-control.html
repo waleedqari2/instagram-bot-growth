@@ -8,19 +8,60 @@
     .box{background:#222;padding:40px;border-radius:12px;max-width:400px;margin:auto}
     button{background:#e1306c;color:#fff;padding:14px 28px;border:none;border-radius:6px;font-size:18px;margin:10px;cursor:pointer}
     button.stop{background:#888}
+    #result{margin-top:20px;font-size:16px}
   </style>
 </head>
 <body>
   <div class="box">
     <h1>تحكم في البوت</h1>
-    <form action="/api/trpc/bot.start" method="POST">
-      <button type="submit">▶️ تشغيل البوت</button>
-    </form>
-    <form action="/api/trpc/bot.stop" method="POST">
-      <button type="submit" class="stop">⏸️ إيقاف البوت</button>
-    </form>
+    <button id="startBtn">▶️ تشغيل البوت</button>
+    <button id="stopBtn" class="stop">⏸️ إيقاف البوت</button>
     <br/>
     <a href="/" style="color:#e1306c">← الرجوع للDashboard</a>
   </div>
+
+  <script>
+    // تشغيل البوت
+    document.getElementById('startBtn').addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/trpc/bot.start', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            username: '3e223',
+            password: null,
+            sessionData: null // سيتم تحميله تلقائياً من الملف
+          })
+        });
+
+        const result = await response.json();
+        document.getElementById('result').innerHTML = 
+          result.success ? 
+          '<span style="color:#0f0">✅ تم تشغيل البوت!</span>' : 
+          `<span style="color:#f00">❌ خطأ: ${result.message}</span>`;
+      } catch (e) {
+        document.getElementById('result').innerHTML = '<span style="color:#f00">❌ خطأ في الاتصال</span>';
+      }
+    });
+
+    // إيقاف البوت
+    document.getElementById('stopBtn').addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/trpc/bot.stop', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: '{}'
+        });
+
+        const result = await response.json();
+        document.getElementById('result').innerHTML = 
+          result.success ? 
+          '<span style="color:#0f0">✅ تم إيقاف البوت!</span>' : 
+          `<span style="color:#f00">❌ خطأ: ${result.message}</span>`;
+      } catch (e) {
+        document.getElementById('result').innerHTML = '<span style="color:#f00">❌ خطأ في الاتصال</span>';
+      }
+    });
+  </script>
 </body>
 </html>
