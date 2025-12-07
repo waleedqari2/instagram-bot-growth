@@ -18,6 +18,7 @@ import {
   getAnalyticsHistory,
   getTodayAnalytics,
   getInstagramAccountByUserId,
+  updateInstagramAccount,
 } from "./db";
 import {
   startBot,
@@ -230,6 +231,39 @@ export const appRouter = router({
         isActive: account.isActive,
       };
     }),
+  }),
+
+  // ===== NEW: Session management =====
+  session: router({
+    // Import session from JSON (file upload simulation)
+    import: protectedProcedure
+      .input(z.object({
+        sessionData: z.any(),
+      }))
+      .mutation(async ({ ctx, input }) => {
+        try {
+          const { sessionData } = input;
+          const db = await getDb();
+          if (!db) throw new Error('Database not available');
+
+          const igAccount = await getInstagramAccountByUserId(ctx.user.id);
+          if (!igAccount) {
+            throw new Error('No Instagram account found. Please connect an account first.');
+          }
+
+          // Save session data to database
+          await updateInstagramAccount(igAccount.id, {
+            sessionData: JSON.stringify(sessionData),
+            lastLoginAt: new Date(),
+            isActive: true,
+          });
+
+          return { success: true, message: 'Session imported successfully' };
+        } catch (error: any) {
+          console.error('[Session Import] Error:', error);
+          throw new Error(`Failed to import session: ${error.message}`);
+        }
+      }),
   }),
 });
 
