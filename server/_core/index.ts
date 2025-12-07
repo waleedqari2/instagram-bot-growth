@@ -34,16 +34,14 @@ async function startServer() {
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
-  // ===== نخدم الـ React build من dist/public =====
-  app.use("/", express.static(path.join(process.cwd(), 'dist/public')));
+  // ===== نخدم صفحة Dashboard ثابتة مباشرة =====
+  app.get("/", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'dashboard.html')));
 
   // ===== نضيف صفحات ثابتة مؤقتة =====
+  app.get("/bot-control", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'bot-control.html')));
   app.get("/targets", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'targets.html')));
   app.get("/logs", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'logs.html')));
   app.get("/settings", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'settings.html')));
-
-  // ===== نضيف نموذج بسيط لتشغيل/إيقاف البوت =====
-  app.get("/bot-control", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'bot-control.html')));
 
   // ===== endpoint تأكد البقاء =====
   app.get("/health", (_req, res) => res.send("Backend is alive"));
@@ -68,7 +66,7 @@ async function startServer() {
   }
 
   server.listen(port, () => {
-    console.log(`[Railway] Full app running on http://localhost:${port}/`);
+    console.log(`[Railway] Static Dashboard running on http://localhost:${port}/`);
   });
 }
 
