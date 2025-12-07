@@ -52,7 +52,7 @@ async function startServer() {
   app.use("/login/", express.static(path.join(process.cwd(), 'public')));
 
   // ===== redirect الجذر إلى /login =====
-  app.get("/", (_req, res) => res.redirect("/login"));
+  app.get("/", (_req, res) => res.redirect(302, "/login"));
 
   // ===== endpoint تأكد البقاء =====
   app.get("/health", (_req, res) => res.send("Backend is alive"));
