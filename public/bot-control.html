@@ -1,4 +1,3 @@
-<!-- Bot Control - Updated -->
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
@@ -17,8 +16,7 @@
     <h1>تحكم في البوت</h1>
     <button id="startBtn">▶️ تشغيل البوت</button>
     <button id="stopBtn" class="stop">⏸️ إيقاف البوت</button>
-    <br/>
-    <a href="/" style="color:#e1306c">← الرجوع للDashboard</a>
+    <div id="result"></div>
   </div>
 
   <script>
@@ -51,7 +49,7 @@
         const response = await fetch('/api/trpc/bot.stop', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: '{}'
+          body: JSON.stringify({})
         });
 
         const result = await response.json();
