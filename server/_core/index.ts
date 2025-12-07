@@ -48,7 +48,7 @@ async function startServer() {
   });
 
   // ===== نخدم الـ login مباشرة =====
-  app.use("/login", express.static(path.join(process.cwd(), 'public')));
+  app.use("/login/", express.static(path.join(process.cwd(), 'public')));
   app.get("/", (_req, res) => res.redirect("/login"));
 
   // ===== نضيف endpoint بسيط للتأكد =====
