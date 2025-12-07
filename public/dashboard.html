@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8"/>
-  <title>Instagram Bot – جاهز للعمل</title>
+  <title>Dashboard - Instagram Bot</title>
   <style>
     body{
       font-family:Arial, sans-serif;
@@ -11,8 +11,9 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      height:100vh;
+      min-height:100vh;
       margin:0;
+      flex-direction:column;
     }
     .box{
       text-align:center;
@@ -20,8 +21,9 @@
       padding:50px 40px;
       border-radius:12px;
       box-shadow:0 0 18px rgba(225,48,108,.5);
-      max-width:420px;
+      max-width:500px;
       width:90%;
+      margin:20px;
     }
     h1{margin:0 0 12px;font-size:32px}
     p{margin:0 0 30px;font-size:18px;line-height:1.4}
@@ -41,18 +43,65 @@
       background:#444;
     }
     .btn-secondary:hover{background:#555}
+    .stats{
+      display:flex;
+      justify-content:space-around;
+      margin:20px 0;
+      font-size:16px;
+    }
+    .stat{
+      text-align:center;
+    }
+    .stat .num{
+      font-size:24px;
+      font-weight:bold;
+      color:#e1306c;
+    }
   </style>
 </head>
 <body>
   <div class="box">
-    <h1>Instagram Bot Growth Manager</h1>
-    <p>البووت جاهز للعمل. اختر ما تريد:</p>
+    <h1>Instagram Bot Dashboard</h1>
+    <p>تحكم كامل في حسابك، اختر ما تريد:</p>
 
-    <!-- الزر الرئيسي: يذهب إلى Dashboard -->
-    <a class="btn" href="/">لوحة التحكم</a>
+    <!-- إحصائيات سريعة -->
+    <div class="stats">
+      <div class="stat">
+        <div class="num" id="follows">0</div>
+        <div>متابعات اليوم</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="likes">0</div>
+        <div>إعجابات اليوم</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="stories">0</div>
+        <div>قصص اليوم</div>
+      </div>
+    </div>
 
-    <!-- زر ثانٍ: يذهب مباشرة إلى صفحة المتابعات -->
-    <a class="btn btn-secondary" href="/targets">إدارة الحسابات المستهدفة</a>
+    <!-- أزرار التحكم -->
+    <a class="btn" href="/api/trpc/bot.start" target="_blank">▶️ تشغيل البوت</a>
+    <a class="btn btn-secondary" href="/api/trpc/bot.stop" target="_blank">⏸️ إيقاف البوت</a>
+    <br/>
+    <a class="btn btn-secondary" href="/targets">🎯 الحسابات المستهدفة</a>
+    <a class="btn btn-secondary" href="/logs">📊 سجل الأنشطة</a>
+    <a class="btn btn-secondary" href="/settings">⚙️ الإعدادات</a>
   </div>
+
+  <!-- JavaScript بسيط لجلب الإحصائيات (اختياري) -->
+  <script>
+    // مثال: جلب الإحصائيات من الـ API (يمكنك تعديله لاحقاً)
+    fetch("/api/trpc/bot.stats")
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('follows').textContent = data.follows || 0;
+        document.getElementById('likes').textContent = data.likes || 0;
+        document.getElementById('stories').textContent = data.stories || 0;
+      })
+      .catch(() => {
+        // لو الـ API ما اشتغل، نترك الأرقام 0
+      });
+  </script>
 </body>
 </html>
