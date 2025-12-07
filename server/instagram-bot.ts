@@ -191,6 +191,7 @@ export async function startBot(userId: number, username: string, password?: stri
     });
 
     return { success: true, message: 'Bot started successfully' };
+
   } catch (error: any) {
     console.error('[Instagram Bot] Failed to start:', error);
     return { success: false, message: error.message || 'Failed to start bot' };
