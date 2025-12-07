@@ -1,0 +1,63 @@
+{
+    "username": "3e223",
+    "session_data": {
+        "uuids": {
+            "phone_id": "6a6545cd-d080-4fa1-8dfa-57325dbe6d91",
+            "uuid": "891257c4-bc5a-4b0d-b01d-f211f3c1d307",
+            "client_session_id": "e6666121-ac36-4c8f-8bdb-1b94c59256eb",
+            "advertising_id": "0d2fe8ba-14ae-4257-a58b-2692e150143b",
+            "android_device_id": "android-f63721730e630e8d",
+            "request_id": "c4357a65-024c-414b-954c-c4cf8b69fe03",
+            "tray_session_id": "269bc2e2-b02a-440f-bf6a-5cc9eb1e67a4"
+        },
+        "mid": "aS1SWAABAAHcEUSofN819RsTF2AH",
+        "ig_u_rur": null,
+        "ig_www_claim": null,
+        "authorization_data": {
+            "ds_user_id": "2246399492",
+            "sessionid": "2246399492%3Arh4tK2IC116TFB%3A12%3AAYg3RZ0pudA8AL7BNVnFbYa1s4lu_5Hs107CuJcfPw"
+        },
+        "cookies": {},
+        "last_login": 1764577911.0361576,
+        "device_settings": {
+            "app_version": "269.0.0.18.75",
+            "android_version": 26,
+            "android_release": "8.0.0",
+            "dpi": "480dpi",
+            "resolution": "1080x1920",
+            "manufacturer": "OnePlus",
+            "device": "devitron",
+            "model": "6T Dev",
+            "cpu": "qcom",
+            "version_code": "314665256"
+        },
+        "user_agent": "Instagram 269.0.0.18.75 Android (26/8.0.0; 480dpi; 1080x1920; OnePlus; 6T Dev; devitron; qcom; en_US; 314665256)",
+        "country": "US",
+        "country_code": 1,
+        "locale": "en_US",
+        "timezone_offset": -14400
+    },
+    "extracted_at": "2025-12-01T11:31:51.036157",
+    "user_agent": "Instagram 269.0.0.18.75 Android (26/8.0.0; 480dpi; 1080x1920; OnePlus; 6T Dev; devitron; qcom; en_US; 314665256)",
+    "device_settings": {
+        "app_version": "269.0.0.18.75",
+        "android_version": 26,
+        "android_release": "8.0.0",
+        "dpi": "480dpi",
+        "resolution": "1080x1920",
+        "manufacturer": "OnePlus",
+        "device": "devitron",
+        "model": "6T Dev",
+        "cpu": "qcom",
+        "version_code": "314665256"
+    },
+    "cookies": {},
+    "authorization_data": {
+        "ds_user_id": "2246399492",
+        "sessionid": "2246399492%3Arh4tK2IC116TFB%3A12%3AAYg3RZ0pudA8AL7BNVnFbYa1s4lu_5Hs107CuJcfPw"
+    },
+    "uuid": "",
+    "device_id": "",
+    "phone_id": "",
+    "ad_id": ""
+}
