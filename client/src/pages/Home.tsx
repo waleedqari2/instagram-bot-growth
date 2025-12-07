@@ -4,118 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getLoginUrl } from "@/const";
 import { trpc } from "@/lib/trpc";
-import { Activity, BarChart3, Bot, PlayCircle, Settings, StopCircle, Target, TrendingUp } from "lucide-react";
+import { Activity, BarChart3, Bot, PlayCircle, Settings, StopCircle, Target, TrendingUp, Upload } from "lucide-react";
 import { Link } from "wouter";
 import { toast } from "sonner";
 
 
 export default function Home() {
   const { user, loading, isAuthenticated } = useAuth();
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 via-white to-blue-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50">
-        <nav className="border-b bg-white/80 backdrop-blur-sm">
-          <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <Bot className="h-8 w-8 text-purple-600" />
-              <h1 className="text-2xl font-bold text-gray-900">Instagram Growth Bot</h1>
-            </div>
-            <a href={getLoginUrl()}>
-              <Button>Sign In</Button>
-            </a>
-          </div>
-        </nav>
-
-        <main className="container mx-auto px-4 py-20">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-5xl font-bold text-gray-900 leading-tight">
-                Grow Your Instagram Account on Autopilot
-              </h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Automate your Instagram growth strategy with intelligent targeting, safe engagement limits, and real-time analytics.
-              </p>
-            </div>
-
-            <div className="flex gap-4 justify-center">
-              <a href={getLoginUrl()}>
-                <Button size="lg" className="text-lg px-8">
-                  Get Started Free
-                </Button>
-              </a>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6 mt-16">
-              <Card>
-                <CardHeader>
-                  <Target className="h-10 w-10 text-purple-600 mb-2" />
-                  <CardTitle>Smart Targeting</CardTitle>
-                  <CardDescription>
-                    Target followers and engagers from competitor accounts in your niche
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <TrendingUp className="h-10 w-10 text-blue-600 mb-2" />
-                  <CardTitle>Safe Growth</CardTitle>
-                  <CardDescription>
-                    Built-in rate limits (120 likes/hour, 100 follows/day) to prevent bans
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <BarChart3 className="h-10 w-10 text-green-600 mb-2" />
-                  <CardTitle>Real-time Analytics</CardTitle>
-                  <CardDescription>
-                    Track your growth with detailed statistics and activity logs
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </div>
-
-            <div className="mt-16 p-8 bg-white rounded-lg shadow-lg">
-              <h3 className="text-2xl font-bold mb-4">How It Works</h3>
-              <div className="grid md:grid-cols-4 gap-6 text-left">
-                <div>
-                  <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold mb-3">1</div>
-                  <h4 className="font-semibold mb-2">Add Target Accounts</h4>
-                  <p className="text-sm text-gray-600">Select competitor accounts in your niche</p>
-                </div>
-                <div>
-                  <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold mb-3">2</div>
-                  <h4 className="font-semibold mb-2">Start the Bot</h4>
-                  <p className="text-sm text-gray-600">Connect your Instagram and launch automation</p>
-                </div>
-                <div>
-                  <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold mb-3">3</div>
-                  <h4 className="font-semibold mb-2">Smart Engagement</h4>
-                  <p className="text-sm text-gray-600">Bot follows and likes relevant accounts automatically</p>
-                </div>
-                <div>
-                  <div className="w-10 h-10 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center font-bold mb-3">4</div>
-                  <h4 className="font-semibold mb-2">Watch Growth</h4>
-                  <p className="text-sm text-gray-600">Monitor your follower growth in real-time</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
-    );
-  }
+  
+  // Bypass authentication and always render the Dashboard
+  // We keep useAuth for the Dashboard component to function, but ignore the checks.
+  // The user object will be null/undefined if not authenticated, which is handled in Dashboard.
 
   return <Dashboard />;
 }
@@ -163,60 +62,53 @@ function Dashboard() {
   });
 
   const handleStartBot = () => {
-    const choice = confirm(
-      "Login Method:\n\n" +
-      "OK = Upload Session File (Recommended)\n" +
-      "Cancel = Username & Password\n\n" +
-      "Session file is more reliable and secure."
-    );
-
-    if (choice) {
-      // Session file upload
-      const input = document.createElement('input');
-      input.type = 'file';
-      input.accept = '.json';
-      input.onchange = async (e: any) => {
-        const file = e.target?.files?.[0];
-        if (file) {
-          try {
-            const text = await file.text();
-            const sessionData = JSON.parse(text);
-            
-            if (!sessionData.username || !sessionData.authorization_data) {
-              toast.error('Invalid session file format');
-              return;
-            }
-            
-            startBotMutation.mutate({ 
-              username: sessionData.username,
-              sessionData 
-            });
-          } catch (error) {
-            toast.error('Failed to read session file');
-          }
-        }
-      };
-      input.click();
+    // Original logic for starting the bot with username/password
+    if (botStatus?.account?.username) {
+      const password = prompt(`Enter password for @${botStatus.account.username}:`);
+      if (password) {
+        startBotMutation.mutate({ 
+          username: botStatus.account.username, 
+          password 
+        });
+      }
     } else {
-      // Username & password
-      if (botStatus?.account?.username) {
-        const password = prompt(`Enter password for @${botStatus.account.username}:`);
+      const username = prompt('Enter your Instagram username:');
+      if (username) {
+        const password = prompt('Enter your Instagram password:');
         if (password) {
-          startBotMutation.mutate({ 
-            username: botStatus.account.username, 
-            password 
-          });
-        }
-      } else {
-        const username = prompt('Enter your Instagram username:');
-        if (username) {
-          const password = prompt('Enter your Instagram password:');
-          if (password) {
-            startBotMutation.mutate({ username, password });
-          }
+          startBotMutation.mutate({ username, password });
         }
       }
     }
+  };
+
+  const handleUploadSession = () => {
+    // Session file upload logic moved to a dedicated function
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e: any) => {
+      const file = e.target?.files?.[0];
+      if (file) {
+        try {
+          const text = await file.text();
+          const sessionData = JSON.parse(text);
+          
+          if (!sessionData.username || !sessionData.authorization_data) {
+            toast.error('Invalid session file format');
+            return;
+          }
+          
+          startBotMutation.mutate({ 
+            username: sessionData.username,
+            sessionData 
+          });
+        } catch (error) {
+          toast.error('Failed to read session file');
+        }
+      }
+    };
+    input.click();
   };
 
   const handleStopBot = () => {
@@ -283,11 +175,14 @@ function Dashboard() {
                         <span className="w-2 h-2 bg-gray-400 rounded-full"></span>
                         Stopped
                       </span>
-                      <Button onClick={handleStartBot} disabled={startBotMutation.isPending}>
+                   <Button onClick={handleStartBot} disabled={isRunning || startBotMutation.isPending}>
                         <PlayCircle className="h-4 w-4 mr-2" />
-                        Start Bot
+                        Start Bot (User/Pass)
                       </Button>
-                    </>
+                      <Button onClick={handleUploadSession} variant="outline" disabled={isRunning || startBotMutation.isPending}>
+                        <Upload className="h-4 w-4 mr-2" />
+                        Upload Session (JSON)
+                      </Button>           </>
                   )}
                   {botStatus?.account && (
                     <Button 
