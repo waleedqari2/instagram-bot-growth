@@ -233,21 +233,22 @@ export const appRouter = router({
     }),
   }),
 
-    // ===== NEW: Session management =====
+  // ===== NEW: Session management =====
   session: router({
     // Import session from JSON (file upload simulation)
-    import: publicProcedure  // ← غيّر من protectedProcedure إلى publicProcedure
+    import: publicProcedure
       .input(z.object({
         sessionData: z.any(),
       }))
-      .mutation(async ({ ctx, input }) => {
+      .mutation(async ({ input }) => {
         try {
           const { sessionData } = input;
+
           const db = await getDb();
           if (!db) throw new Error('Database not available');
 
-          // نستخدم userId = 1 مؤقتاً لحين نضيف نظام تسجيل دخول حقيقي
-          const userId = 1; // ← مؤقت حتى نضيف تسجيل دخول
+          // نستخدم userId = 1 مباشرة بدون ما نتأكد من تسجيل دخول
+          const userId = 1;
 
           const igAccount = await getInstagramAccountByUserId(userId);
           if (!igAccount) {
