@@ -2,106 +2,39 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8"/>
-  <title>Dashboard - Instagram Bot</title>
+  <title>Instagram Bot Dashboard</title>
   <style>
-    body{
-      font-family:Arial, sans-serif;
-      background:#111;
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      min-height:100vh;
-      margin:0;
-      flex-direction:column;
-    }
-    .box{
-      text-align:center;
-      background:#222;
-      padding:50px 40px;
-      border-radius:12px;
-      box-shadow:0 0 18px rgba(225,48,108,.5);
-      max-width:500px;
-      width:90%;
-      margin:20px;
-    }
+    body{font-family:Arial;background:#111;color:#fff;text-align:center;padding:50px}
+    .box{background:#222;padding:40px;border-radius:12px;max-width:500px;margin:auto}
     h1{margin:0 0 12px;font-size:32px}
-    p{margin:0 0 30px;font-size:18px;line-height:1.4}
-    .btn{
-      display:inline-block;
-      background:#e1306c;
-      color:#fff;
-      padding:14px 28px;
-      border-radius:6px;
-      text-decoration:none;
-      font-size:18px;
-      margin:8px;
-      transition:background .25s;
-    }
+    p{margin:0 0 30px;font-size:18px}
+    .btn{display:inline-block;background:#e1306c;color:#fff;padding:14px 28px;border-radius:6px;text-decoration:none;font-size:18px;margin:8px;transition:background .25s}
     .btn:hover{background:#c7225a}
-    .btn-secondary{
-      background:#444;
-    }
-    .btn-secondary:hover{background:#555}
-    .stats{
-      display:flex;
-      justify-content:space-around;
-      margin:20px 0;
-      font-size:16px;
-    }
-    .stat{
-      text-align:center;
-    }
-    .stat .num{
-      font-size:24px;
-      font-weight:bold;
-      color:#e1306c;
-    }
+    .btn-secondary{background:#444}.btn-secondary:hover{background:#555}
   </style>
 </head>
 <body>
   <div class="box">
     <h1>Instagram Bot Dashboard</h1>
-    <p>تحكم كامل في حسابك، اختر ما تريد:</p>
+    <p>البووت جاهز للعمل. اختر ما تريد:</p>
 
-    <!-- إحصائيات سريعة -->
-    <div class="stats">
-      <div class="stat">
-        <div class="num" id="follows">0</div>
-        <div>متابعات اليوم</div>
-      </div>
-      <div class="stat">
-        <div class="num" id="likes">0</div>
-        <div>إعجابات اليوم</div>
-      </div>
-      <div class="stat">
-        <div class="num" id="stories">0</div>
-        <div>قصص اليوم</div>
-      </div>
-    </div>
+    <!-- نموذج تشغيل البوت -->
+    <form action="/api/trpc/bot.start" method="POST">
+      <button type="submit" class="btn">▶️ تشغيل البوت</button>
+    </form>
 
-    <!-- أزرار التحكم -->
-    <a class="btn" href="/api/trpc/bot.start" target="_blank">▶️ تشغيل البوت</a>
-    <a class="btn btn-secondary" href="/api/trpc/bot.stop" target="_blank">⏸️ إيقاف البوت</a>
+    <!-- نموذج إيقاف البوت -->
+    <form action="/api/trpc/bot.stop" method="POST">
+      <button type="submit" class="btn btn-secondary">⏸️ إيقاف البوت</button>
+    </form>
+
+    <!-- روابط الصفحات الثابتة -->
     <br/>
-    <a class="btn btn-secondary" href="/targets">🎯 الحسابات المستهدفة</a>
-    <a class="btn btn-secondary" href="/logs">📊 سجل الأنشطة</a>
-    <a class="btn btn-secondary" href="/settings">⚙️ الإعدادات</a>
+    <a href="/targets" class="btn btn-secondary">🎯 الحسابات المستهدفة</a>
+    <a href="/logs" class="btn btn-secondary">📊 سجل الأنشطة</a>
+    <a href="/settings" class="btn btn-secondary">⚙️ الإعدادات</a>
+    <br/><br/>
+    <a href="/health" style="color:#e1306c;font-size:14px">✅ Backend is alive</a>
   </div>
-
-  <!-- JavaScript بسيط لجلب الإحصائيات (اختياري) -->
-  <script>
-    // مثال: جلب الإحصائيات من الـ API (يمكنك تعديله لاحقاً)
-    fetch("/api/trpc/bot.stats")
-      .then(r => r.json())
-      .then(data => {
-        document.getElementById('follows').textContent = data.follows || 0;
-        document.getElementById('likes').textContent = data.likes || 0;
-        document.getElementById('stories').textContent = data.stories || 0;
-      })
-      .catch(() => {
-        // لو الـ API ما اشتغل، نترك الأرقام 0
-      });
-  </script>
 </body>
 </html>
