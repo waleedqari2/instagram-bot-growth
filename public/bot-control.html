@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8"/>
+  <title>تحكم في البوت</title>
+  <style>
+    body{font-family:Arial;background:#111;color:#fff;text-align:center;padding:50px}
+    .box{background:#222;padding:40px;border-radius:12px;max-width:400px;margin:auto}
+    button{background:#e1306c;color:#fff;padding:14px 28px;border:none;border-radius:6px;font-size:18px;margin:10px;cursor:pointer}
+    button.stop{background:#888}
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1>تحكم في البوت</h1>
+    <form action="/api/trpc/bot.start" method="POST">
+      <button type="submit">▶️ تشغيل البوت</button>
+    </form>
+    <form action="/api/trpc/bot.stop" method="POST">
+      <button type="submit" class="stop">⏸️ إيقاف البوت</button>
+    </form>
+    <br/>
+    <a href="/" style="color:#e1306c">← الرجوع للDashboard</a>
+  </div>
+</body>
+</html>
