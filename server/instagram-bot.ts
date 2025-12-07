@@ -39,6 +39,21 @@ function randomDelay(minSeconds: number, maxSeconds: number): Promise<void> {
 }
 
 /**
+ * Load session from public/session.json
+ */
+async function loadSessionFromFile(): Promise<any> {
+  const sessionPath = path.join(process.cwd(), 'public', 'session.json');
+  try {
+    const data = await fs.readFile(sessionPath, 'utf-8');
+    console.log('[Bot] Session loaded from public/session.json');
+    return JSON.parse(data);
+  } catch (e) {
+    console.log('[Bot] No session file found, will try password login');
+    return null;
+  }
+}
+
+/**
  * Import session from JSON file (Instagrapi format)
  */
 async function importSessionFromFile(sessionPath: string): Promise<any> {
@@ -120,6 +135,11 @@ export async function startBot(userId: number, username: string, password?: stri
         password: hashedPassword,
         isActive: true,
       });
+    }
+
+    // تحميل الـ session من الملف تلقائياً إذا لم يُمرَّر
+    if (!sessionData) {
+      sessionData = await loadSessionFromFile();
     }
 
     // Login to Instagram (session first, then password)
