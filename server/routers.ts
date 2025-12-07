@@ -243,11 +243,10 @@ export const appRouter = router({
       .mutation(async ({ input }) => {
         try {
           const { sessionData } = input;
-
           const db = await getDb();
           if (!db) throw new Error('Database not available');
 
-          // نستخدم userId = 1 مباشرة بدون ما نتأكد من تسجيل دخول
+          // نستخدم userId = 1 مؤقتاً لحين نضيف نظام تسجيل دخول حقيقي
           const userId = 1;
 
           const igAccount = await getInstagramAccountByUserId(userId);
@@ -269,5 +268,6 @@ export const appRouter = router({
         }
       }),
   }),
+});
 
 export type AppRouter = typeof appRouter;
