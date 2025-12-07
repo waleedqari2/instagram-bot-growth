@@ -233,10 +233,10 @@ export const appRouter = router({
     }),
   }),
 
-  // ===== NEW: Session management =====
+    // ===== NEW: Session management =====
   session: router({
     // Import session from JSON (file upload simulation)
-    import: protectedProcedure
+    import: publicProcedure  // ← غيّر من protectedProcedure إلى publicProcedure
       .input(z.object({
         sessionData: z.any(),
       }))
@@ -246,7 +246,10 @@ export const appRouter = router({
           const db = await getDb();
           if (!db) throw new Error('Database not available');
 
-          const igAccount = await getInstagramAccountByUserId(ctx.user.id);
+          // نستخدم userId = 1 مؤقتاً لحين نضيف نظام تسجيل دخول حقيقي
+          const userId = 1; // ← مؤقت حتى نضيف تسجيل دخول
+
+          const igAccount = await getInstagramAccountByUserId(userId);
           if (!igAccount) {
             throw new Error('No Instagram account found. Please connect an account first.');
           }
@@ -265,6 +268,5 @@ export const appRouter = router({
         }
       }),
   }),
-});
 
 export type AppRouter = typeof appRouter;
