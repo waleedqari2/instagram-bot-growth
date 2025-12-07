@@ -47,11 +47,14 @@ async function startServer() {
     }
   });
 
-  // ===== نخدم الـ login مباشرة =====
+  // ===== نخدم الـ login مع وبدون شرطة نهائية =====
+  app.use("/login",  express.static(path.join(process.cwd(), 'public')));
   app.use("/login/", express.static(path.join(process.cwd(), 'public')));
+
+  // ===== redirect الجذر إلى /login =====
   app.get("/", (_req, res) => res.redirect("/login"));
 
-  // ===== نضيف endpoint بسيط للتأكد =====
+  // ===== endpoint تأكد البقاء =====
   app.get("/health", (_req, res) => res.send("Backend is alive"));
 
   // OAuth
