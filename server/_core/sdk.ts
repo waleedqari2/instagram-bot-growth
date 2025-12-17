@@ -155,7 +155,10 @@ class SDKServer {
   }
 
   private getSessionSecret() {
-    const secret = ENV.cookieSecret;
+    // Since we are bypassing the real authentication, we use a placeholder secret
+    // if the environment variable is not set, to prevent the server from crashing
+    // when trying to verify a non-existent session.
+    const secret = ENV.cookieSecret || "placeholder_secret_for_bypassed_auth_flow";
     return new TextEncoder().encode(secret);
   }
 
