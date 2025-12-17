@@ -6,7 +6,7 @@ import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { registerOAuthRoutes } from "./oauth";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
-import path from "path";
+import { serveStatic, setupVite } from "./vite";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -30,26 +30,13 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
-
+  // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
+  // Explicitly allow x-www-form-urlencoded with extended: true to handle tRPC requests
   app.use(express.urlencoded({ limit: "50mb", extended: true }));
-
-  // ===== نخدم صفحة Dashboard ثابتة مباشرة =====
-  app.get("/", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'dashboard.html')));
-
-  // ===== نضيف صفحات ثابتة مؤقتة =====
-  app.get("/bot-control", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'bot-control.html')));
-  app.get("/targets", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'targets.html')));
-  app.get("/logs", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'logs.html')));
-  app.get("/settings", (_req, res) => res.sendFile(path.join(process.cwd(), 'public', 'settings.html')));
-
-  // ===== endpoint تأكد البقاء =====
-  app.get("/health", (_req, res) => res.send("Backend is alive"));
-
-  // OAuth
+  // OAuth callback under /api/oauth/callback
   registerOAuthRoutes(app);
-
-  // tRPC
+  // tRPC API
   app.use(
     "/api/trpc",
     createExpressMiddleware({
@@ -57,6 +44,12 @@ async function startServer() {
       createContext,
     })
   );
+  // development mode uses Vite, production mode uses static files
+  if (process.env.NODE_ENV === "development") {
+    await setupVite(app, server);
+  } else {
+    serveStatic(app);
+  }
 
   const preferredPort = parseInt(process.env.PORT || "3000");
   const port = await findAvailablePort(preferredPort);
@@ -66,7 +59,7 @@ async function startServer() {
   }
 
   server.listen(port, () => {
-    console.log(`[Railway] Static Dashboard running on http://localhost:${port}/`);
+    console.log(`Server running on http://localhost:${port}/`);
   });
 }
 
