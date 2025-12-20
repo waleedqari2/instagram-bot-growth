@@ -1,42 +1,31 @@
 import type { CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import type { User } from "../../drizzle/schema";
-import { sdk } from "./sdk";
 
 export type TrpcContext = {
   req: CreateExpressContextOptions["req"];
   res: CreateExpressContextOptions["res"];
-  user: User | null;
+  user: User;
 };
 
 export async function createContext(
   opts: CreateExpressContextOptions
 ): Promise<TrpcContext> {
-  let user: User | null = null;
-
-  try {
-    user = await sdk.authenticateRequest(opts.req);
-  } catch (error) {
-    // Authentication failed, create dummy user
-  }
-
-  // Always ensure we have a user (bypass authentication)
-  if (!user) {
-    user = {
-      id: 1,
-      openId: "dummy-user",
-      name: "Default User",
-      email: null,
-      loginMethod: null,
-      role: "admin",
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      lastSignedIn: new Date(),
-    };
-  }
+  // مستخدم وهمي ثابت (نفس الموجود في جدول users id=1)
+  const dummy: User = {
+    id: 1,
+    openId: "dummy-user",
+    name: "Default User",
+    email: null,
+    loginMethod: null,
+    role: "admin",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    lastSignedIn: new Date(),
+  };
 
   return {
     req: opts.req,
     res: opts.res,
-    user,
+    user: dummy, // دائماً نعيده بدون أي محاولة مصادقة
   };
 }
