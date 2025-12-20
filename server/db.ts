@@ -50,7 +50,10 @@ export async function getDb() {
   }
   try {
     console.log('[DB] Attempting connection...');
-    const conn = await createConnection(url);
+    const conn = await createConnection({
+      uri: url,
+      ssl: { rejectUnauthorized: false },   // السطر الحاسم
+    });
     console.log('[DB] Connected successfully');
     _db = drizzle(conn, { schema, mode: 'default' });
     return _db;
