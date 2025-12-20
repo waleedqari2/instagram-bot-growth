@@ -16,20 +16,22 @@ export async function createContext(
   try {
     user = await sdk.authenticateRequest(opts.req);
   } catch (error) {
-    // Authentication is optional for public procedures.
-    // Since we bypassed the login page, we create a dummy user for protected procedures to function.
+    // Authentication failed, create dummy user
+  }
+
+  // Always ensure we have a user (bypass authentication)
+  if (!user) {
     user = {
-      id: 1, // Use a fixed ID for the dummy user
-      openId: "dummy-user-id-1",
-      name: "Guest User",
-      email: "guest@example.com",
-      loginMethod: "bypassed",
-      role: "user",
+      id: 1,
+      openId: "dummy-user",
+      name: "Default User",
+      email: null,
+      loginMethod: null,
+      role: "admin",
       createdAt: new Date(),
       updatedAt: new Date(),
       lastSignedIn: new Date(),
     };
-    console.warn("[Auth Bypass] Created dummy user for protected procedures.");
   }
 
   return {
