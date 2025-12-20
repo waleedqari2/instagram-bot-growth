@@ -45,19 +45,17 @@ export async function getDb() {
 
   const url = process.env.DATABASE_URL;
   if (!url) {
-    console.error("[DB] DATABASE_URL غير معرّف");
+    console.error('[DB] DATABASE_URL not set!');
     return null;
   }
-
   try {
-    console.log("[DB] Connecting to:", url);
-    const connection = await createConnection(url);
-    console.log("[DB] Connected successfully");
-
-    _db = drizzle(connection, { schema, mode: "default" });
+    console.log('[DB] Attempting connection...');
+    const conn = await createConnection(url);
+    console.log('[DB] Connected successfully');
+    _db = drizzle(conn, { schema, mode: 'default' });
     return _db;
-  } catch (e) {
-    console.error("[DB] Connection failed:", e);
+  } catch (err: any) {
+    console.error('[DB] Connection failed:', err.message, err.code, err.sqlState);
     return null;
   }
 }
