@@ -432,6 +432,9 @@ async function processFollowAction(userId: number, ig: IgApiClient, config: any)
       // Mark as processed and followed
       await markUserAsProcessed(targetUser.id, true, false);
       
+      // Increment daily follow count
+      await incrementDailyLimit(userId, 'follows');
+      
       await createActionLog({
         userId,
         actionType: 'follow',
